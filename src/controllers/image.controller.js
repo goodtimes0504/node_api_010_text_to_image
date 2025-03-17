@@ -207,8 +207,8 @@ export const textAndImageToImage = async (req, res, next) => {
         });
 
         try {
-            // 调用Gemini API生成图像
-            const imageBase64 = await geminiService.generateImageFromTextAndImage(prompt, file.path);
+            // 调用Gemini API生成图像 - 修正参数顺序
+            const imageBase64 = await geminiService.generateImageFromTextAndImage(file.path, prompt);
 
             // 保存图像
             const imageUrl = await imageStorageService.saveImageFromBase64(imageBase64, 'textimg2img');
