@@ -76,6 +76,11 @@ export const textToImage = async (req, res, next) => {
             // 调用Gemini API生成图像
             const imageBase64 = await geminiService.generateImageFromText(prompt);
 
+            // 检查生成的图片是否有效
+            if (!imageBase64 || imageBase64.length < 1000) { // 简单检查结果是否太小
+                throw new Error('生成的图片无效或过小');
+            }
+
             // 保存图像
             const imageUrl = await imageStorageService.saveImageFromBase64(imageBase64, 'text2img');
 
@@ -136,6 +141,11 @@ export const imageToImage = async (req, res, next) => {
         try {
             // 调用Gemini API生成图像
             const imageBase64 = await geminiService.generateImageFromImage(file.path, prompt || '');
+
+            // 检查生成的图片是否有效
+            if (!imageBase64 || imageBase64.length < 1000) { // 简单检查结果是否太小
+                throw new Error('生成的图片无效或过小');
+            }
 
             // 保存图像
             const imageUrl = await imageStorageService.saveImageFromBase64(imageBase64, 'img2img');
@@ -209,6 +219,11 @@ export const textAndImageToImage = async (req, res, next) => {
         try {
             // 调用Gemini API生成图像 - 修正参数顺序
             const imageBase64 = await geminiService.generateImageFromTextAndImage(file.path, prompt);
+
+            // 检查生成的图片是否有效
+            if (!imageBase64 || imageBase64.length < 1000) { // 简单检查结果是否太小
+                throw new Error('生成的图片无效或过小');
+            }
 
             // 保存图像
             const imageUrl = await imageStorageService.saveImageFromBase64(imageBase64, 'textimg2img');

@@ -218,12 +218,24 @@ export const generateImageFromTextAndImage = async (imagePath, prompt) => {
             history: [],
             generationConfig: {
                 responseModalities: ["Text", "Image"],
+                temperature: 0.8,       // 增加温度以提高创造性
+                topK: 32,               // 调整topK
+                topP: 0.95              // 保持较高的topP值
             }
         });
 
         // 创建消息内容
         const messageParts = [
-            { text: `${prompt} 请根据这张图片和文本描述生成一张新图片。` },
+            {
+                text: `请根据以下指示修改这张图片：${prompt}
+            
+具体要求：
+1. 必须对图片进行明显的视觉修改
+2. 修改应符合提示词的要求
+3. 保持图片的主要内容特征
+4. 返回完全修改后的新图片，而不是原图
+            
+请创建一个与原图明显不同的新版本。` },
             {
                 inlineData: {
                     mimeType,
